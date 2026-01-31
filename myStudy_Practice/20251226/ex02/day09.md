@@ -1,0 +1,13 @@
+## node.js
+1. 새 폴더로 터미널을 실행한 후 npm -v 로 node.js 설치 여부 확인 (터미널은 cmd로 되어있어야 함)
+2. **npm** init -y를 입력하면 json 파일 생성
+3. **npm** run test를 입력하면 json 안의 `scripts` 영역의 test를 실행
+4. `scripts`영역에 `"start (커스텀 가능)"`를 생성하고 js 파일명을 node와 함께 입력
+5. nodemon (감시 패키지)를 설치하기 위해, npm 사이트에서 nodemon을 검색한 후, install 코드 `npm i nodemon`를 복사하여 **packge.json**의 프로젝트(폴더)에 입력한다. (즉, 프로젝트 마다 패키지를 설치하여 관리한다.)
+6. nodemon 패키지는  **package.json**에 `"dependencies": {
+    "nodemon": "^3.1.11"
+  }` 가 있다면 `npm i` 명령어를 통해 자동으로 설치 가능. 즉, **nodemon**파일은 github에 업로드 할 필요가 없다.(용량제한)
+7. 터미널에 npm run dev을 입력하면 자동으로 관련 js 파일을 반복 실행(js파일을 저장할 때마다)
+8. dev 작업 강제 종료는 **ctr + c**
+9. **작업관리자**를 통해 작업이 실행되고 있는지를 확인할 수 있고, 강제 종료도 가능함.
+10. js 파일에 node 홈페이지에 있는 서비스 코드를 복붙하여 서비스한다.

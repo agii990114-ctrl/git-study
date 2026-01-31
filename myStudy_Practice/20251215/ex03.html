@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <select size="1" name="txt">
+            <option value="0" selected>선택하세요</option>
+            <option value="1">삼성</option>
+            <option value="2">롯데</option>
+            <option value="3">금성</option>
+            <option value="4">우주</option>
+        </select>
+        <select size="1" multiple>
+            <option>LG</option>
+            <optgroup label="삼성">
+                <option></option>
+                <option></option>
+            </optgroup>
+            <optgroup label="애플">
+                <option></option>
+                <option></option>
+            </optgroup>
+        </select>
+        <div>
+            <label for="r1">사과</label>
+            <input type="radio" name="radio" id="r1" checked value="1">
+            <label for="r2">바나나</label>
+            <input type="radio" name="radio" id="r2" value="2">
+            <label for="r3">귤</label>
+            <input type="radio" name="radio" id="r3"value="3">
+        </div>
+        <hr />
+        <div>
+            <input type="checkbox" name="checkbox" checked value="1">
+            <input type="checkbox" name="checkbox" value="2">
+            <input type="checkbox" name="checkbox" value="3">
+        </div>
+        <button type="submit">요청</button>
+    </form>
+</body>
+</html>

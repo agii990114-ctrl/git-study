@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+       .container {
+        display: grid;
+        
+        /* 3개의 균등한 열(1fr) 정의 */
+        
+        /* 2개의 행(100px) 정의 */
+        /* grid-template-columns: 1fr 2fr 1fr 1fr; */
+        /* 셀 간격 10px 설정 */
+        gap: 10px; 
+        }
+
+        .item1 {
+        /* 1번 열 라인에서 시작하여 3번 열 라인까지 차지 (2개 열) */
+            grid-column: 1 / 2;
+        background-color: #ff9999;
+        }
+
+        .item2 {
+        /* 3번 열 라인에서 시작하여 4번 열 라인까지 차지 (1개 열) */
+        grid-column: 2 / 3;
+        background-color: #99ff99;
+        }
+
+        .item3 {
+        /* 2행 전체를 차지하도록 1번 열 라인에서 4번 열 라인까지 배치 */
+         grid-column: 3 / 4;
+        background-color: #9999ff;
+        }
+        .item4 {
+            background: #e299ff;
+            grid-column: 4 / 5;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="item item1">1</div>
+    <div class="item item2">2</div>
+    <div class="item item3">3</div>
+    <div class="item item4">4</div>
+    <div class="item item1">1</div>
+    <div class="item item2">2</div>
+    <div class="item item3">3</div>
+    <div class="item item4">4</div>
+    </div>
+</body>
+</html>

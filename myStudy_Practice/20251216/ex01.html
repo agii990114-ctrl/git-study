@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #333;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        ul,ol,li {
+            list-style: none;
+        }
+        a {
+            color: #333;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .bg_color {
+            background: #999999;
+            height: 100%;
+            opacity: .3;
+        }
+        .bg {
+            width: 800px;
+            height: 700px;
+            background: url(./img01.jpg) no-repeat center center/cover; ;
+            margin: 40px auto;
+            position: relative;
+            filter: grayscale(30%);
+        }
+        .bg .textBox {
+            position: absolute;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+        }
+        .bg .textBox * {
+            color: #fff;
+            padding: 8px 0;
+        }
+        .bg .textBox h1 {
+            font-weight: 400;
+            font-size: 60px;
+        }
+        .bg .textBox p {
+            font-weight: 300;
+            font-size: 30px;
+        }
+        .bg ul {
+            position: absolute;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            text-align: center;
+            background: rgba(255,255,255,.5);
+            height: 60px; 
+            font-size: 16px;
+            align-content: center;
+        }
+
+    </style>
+</head>
+<body>
+    
+        <div class="bg">
+            <div class="bg_color"></div>
+            <div class="textBox">
+                <h1>Jane & John</h1>
+                <p>Are getting married</p>
+                <h2>17.07.2017</h2>
+            </div>
+            <ul>
+                <li>Home</li>
+                <li>Jane & John</li>
+                <li>Wedding</li>
+                <li>RSVP</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

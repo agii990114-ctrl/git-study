@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #333;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        ul,ol,li {
+            list-style: none;
+        }
+        a {
+            color: #333;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .flex {
+            display: flex; justify-content: flex-start;
+        }
+        .wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px 32px 32px 
+        }
+        .info .lableArea {
+            padding: 10px 16px;
+            background: #009688;
+        }
+        .info .lableArea h2 {
+            color: #fff;
+            font-weight: 400;
+            font-size: 32px;
+        }
+        .info form {
+            padding: 40px 16px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.3);
+        }
+        .info form label {
+            color: #757575;
+        }
+        .info form .textArea input {
+            width: 100%;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin: 5px 0 20px;
+            padding: 10px;
+        }
+        .info form .checkArea {
+            padding-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .info form .checkArea input {
+            width: 24px;
+            margin-right: 5px;
+        }
+        .info form .checkArea .item {
+            margin-bottom: 10px;
+        }
+        .info form button {
+            background: #009688;
+            font-size: 16px;
+            color: #fff;
+            padding: 8px 40px;
+            border: none;
+            cursor: pointer;
+        }
+        .textArea textarea {
+            width: 100%;
+            font-size: 16px;
+            margin: 5px 0 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="info">
+            <div class="lableArea">
+                <h2>Input Form</h2>
+            </div>
+            <form method="get">
+                <div class="textArea">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email">
+                    <label for="subjet">Subject</label>
+                    <textarea id="subject" name="subject"></textarea>
+                </div>
+                <div class="checkArea">
+                    <div class="checkBox">
+                        <div class="item flex">
+                            <input type="checkbox" name="check" id="check1" value="milk" checked/>
+                            <label for="check1">Milk</label>
+                        </div>
+                        <div class="item flex">
+                            <input type="checkbox" name="check" id="check2" value="sugar"/>
+                            <label for="check2">Sugar</label>
+                        </div>
+                        <div class="item flex">
+                            <input type="checkbox" name="check" id="check3" value="lemon" disabled/>
+                            <label for="check3">Lemon (Disabled)</label>
+                        </div>
+                    </div>
+                    <div class="radiokBox">
+                        <div class="item flex">
+                            <input type="radio" name="radio" id="radio1" value="male" checked/>
+                            <label for="radio1">Male</label>
+                        </div>
+                        <div class="item flex">
+                            <input type="radio" name="radio" id="radio2" value="female"/>
+                            <label for="radio2">Female</label>
+                        </div>
+                        <div class="item flex">
+                            <input type="radio" name="radio" id="radio3" value="unknown" disabled/>
+                            <label for="radio3">Don't know (Disabled)</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit">Send ></button>
+                
+            </form>
+        </div>
+    </div>
+</body>
+</html>

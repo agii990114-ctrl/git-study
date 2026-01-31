@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>폼 태그</title>
+</head>
+<body>
+    <form method="get"> <!--post는 백엔드가 설정되어있어야 정보 전달이 가능. 즉, 프론트에서는 get만 사용 가능-->
+        
+        <label for = "ID">
+            ID : 
+        </label>
+        <input type="text" name="text" id="ID" required placeholder="글 작성해 주세요"> <!-- name : 입력된 값을 전달하여 저장하는 변수-->
+        <!-- <button type="submit" id="ID">제출</button> -->
+        <input type="password" id="ID">
+        <input type="checkbox" id="ID">
+        <input type="radio" id="ID">
+        <input type="submit" id="ID">
+        <input type="reset" id="ID">
+        
+        <input type="file" id="ID">
+        <input type="hidden" id="ID">
+        <select >
+            <option>하하하</option>
+            <option>하하하</option>
+            <option>하하하</option>
+        </select>
+
+<!--    **input의 type
+
+        -text : 기본 텍스트 - 한 줄의 텍스트를 입력받는 기본값입니다. type 속성을 생략하면 이 값이 적용됩니다.
+        -password : 비밀번호 - 입력된 텍스트가 가려져서 표시됩니다 (일반적으로 * 또는 •).
+        -checkbox : 체크 박스 - 여러 옵션 중 다중 선택을 허용합니다. 선택되었을 때만 서버로 값이 전송됩니다.
+        -radio : 라디오 버튼 - 동일한 name을 가진 그룹 내에서 단일 선택만 허용합니다.
+        -submit : 제출 버튼 - 폼의 데이터를 지정된 서버 경로로 전송하는 버튼을 만듭니다.
+        -reset : 초기화 버튼 - 폼 내의 모든 입력 필드를 기본값으로 되돌리는 버튼을 만듭니다.
+        -button : 일반 버튼 - 특별한 기본 동작이 없는 일반 버튼입니다. 주로 JavaScript와 연결하여 특정 기능을 수행하도록 만듭니다.
+        -file : 파일 선택 - 사용자가 로컬 장치에서 파일을 선택하고 서버로 업로드할 수 있도록 합니다. accept 속성으로 허용 파일 형식을 지정할 수 있습니다.
+        -hidden : 숨겨진 필드 - 사용자에게는 보이지 않지만, 폼을 제출할 때 특정 데이터를 서버로 함께 전송할 때 사용됩니다. 
+        -->
+    </form>
+</body>
+</html>

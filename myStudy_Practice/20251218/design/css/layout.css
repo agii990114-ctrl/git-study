@@ -1,0 +1,15 @@
+/* header */
+#header {
+    height: 60px;
+    align-content: center;
+    background: #2C3D4E;
+    text-align: center;
+}
+#header a h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #fff;
+}
+#header a h1 span {
+    color: #42B883
+}

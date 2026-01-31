@@ -1,0 +1,36 @@
+/* subMain01*/
+#subMain01 {
+    padding: 16px;
+}
+#subMain01 p {
+    color: #fff;
+    font-size: 20px;
+}
+#subMain01 .topBox h2 {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 500;
+    display: inline-block;
+    margin-right: 16px;
+}
+#subMain01 .topBox h3 {
+    color: #fff;
+    background: #42b883;
+    padding: 14px 12px;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 10px;
+    display: inline-block
+}
+#subMain01 .topBox img {
+    width: 200px;
+    margin-bottom: 20px;
+}
+#subMain01 .searchBox p {
+    text-align: center;
+}
+#subMain01 .searchBox p:first-child {
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}

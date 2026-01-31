@@ -1,0 +1,28 @@
+/* header
+.contain-fluid:first-child .row {
+    height: 60px;
+    align-content: center;
+    background: #2C3D4E;
+}
+.contain-fluid:first-child .row h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #fff;
+}
+.contain-fluid:first-child .row span {
+    color: #42B883
+}
+
+/* main01 */
+/* .contain-fluid:nth-child(2) .row {
+    height: 300px;
+}
+.contain-fluid:nth-child(2) .row .col {
+    height: 100%;
+}
+.contain-fluid:nth-child(2) .row .col img {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+.contain-fluid:nth-child(2) .row .col */ 
