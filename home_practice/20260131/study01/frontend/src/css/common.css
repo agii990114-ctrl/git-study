@@ -1,0 +1,180 @@
+* {margin: 0; padding: 0; box-sizing: border-box; color: #333;}
+ol,ul,li {list-style: none;}
+a {text-decoration: none; color: #333; display: inline-block;}
+
+
+html {font-size: 10px;}
+body {font-family: 'Pretendard'; font-size: 1.6rem; overflow-x: hidden; position: relative;}
+
+img {display: inline-block;}
+button {border: none; background: none; cursor: pointer;}
+
+/*색션*/
+#sub section {margin-bottom: 10rem !important; overflow: hidden;}
+
+@media screen and (max-width: 1280px) {
+    #sub section {margin-bottom: 6rem !important;}
+}
+
+.flex_btw {display: flex; justify-content: space-between;}
+.flex_ctr {display: flex; justify-content: center;}
+.flex_str {display: flex; justify-content: flex-start;}
+.flex_end {display: flex; justify-content: flex-end;}
+.flex_ard {display: flex; justify-content: space-around;}
+.flex_evn {display: flex; justify-content: space-evenly;}
+.flex_wrap {flex-wrap: wrap;}
+
+.blind {font-size: 0; position: absolute; left: -9999px;}
+
+.hide {display: none;}
+
+.center {max-width: 1440px; margin: 0 auto; padding: 0 20px;}
+.center02 {max-width: 1620px; margin: 0 auto; padding: 0 20px;}
+
+.cap_dec {font-size: 3.2rem; font-weight: 800; padding: .7rem 1.5rem;  position: relative; width: fit-content;}
+.cap_dec::before {content: ''; width: 1.8rem; height: 1.8rem; background: url(./img/cap_deco.png) no-repeat center center/contain; display: inline-block; position: absolute; top: 0; left: 0;}
+
+.cap_dec1 {font-size: 4rem; font-weight: 800;  position: relative; width: fit-content; margin: 0 auto 4rem;}
+.cap_dec1 span {position:relative; z-index: 1;}
+.cap_dec1::after  {content:''; width: 100%; height: 1rem; background: #34a78d; opacity: .6; display: block; position: absolute; bottom: .5rem; left: 50%; transform: translateX(-50%);}
+
+/* skip */
+#skipToContent {position: absolute; width: 100%; margin: 0 auto;}
+#skipToContent a {display: block; height: 1px; margin-bottom: -1px; overflow:hidden; white-space:nowrap; width: 1px;}
+#skipToContent ul li {float: left}
+#skipToContent a:focus, #skipToContent a:active {height: 18px; width: 130px; padding: 5px; color: #000; text-align: center; font-weight: bold; margin: 0;}
+
+
+
+/* 키프레임*/
+@keyframes fade-top{
+    0% {top: -100px; opacity: 0;}
+    100% {top: 0; opacity: 1;}
+}
+
+@keyframes fade-left{
+    0% {left: -100px; opacity: 0;}
+    100% {left: 0; opacity: 1;}
+}
+
+@keyframes fade-right{
+    0% {right: -100px; opacity: 0;}
+    100% {right: 0; opacity: 1;}
+}
+
+@keyframes fade-d_right{
+    0% {right: -200px; opacity: 0;}
+    100% {right: 0; opacity: 1;}
+}
+
+@keyframes fade-bottom{
+    0% {top: 100px; opacity: 0;}
+    100% {top: 0; opacity: 1;}
+}
+
+@keyframes fade-in{
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+/* 반응형 */
+@media screen and (max-width: 1480px) {
+  html {font-size: 9px;}
+}
+
+  @media screen and (max-width: 1280px) {
+  html {font-size: 8px;}
+}
+
+@media screen and (max-width: 980px) {
+  html {font-size: 7px;}
+}
+
+  @media screen and (max-width: 767px) {
+  html {font-size: 6px;}
+}
+
+
+
+/* 미디어쿼리*/
+ 
+@font-face {
+    font-family: 'Jalnan';
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/Jalnan.eot');
+    src:url('https://cdn.jsdelivr.net/gh/wizfile/font/Jalnan.woff') format('woff');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 900;
+    src: local('Pretendard Black'), local('Pretendard-Black'),
+        url(../fonts/Pretendard-Black.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 800;
+    src: local('Pretendard ExtraBold'), local('Pretendard-ExtraBold'),
+        url(../fonts/Pretendard-ExtraBold.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Pretendard Bold'), local('Pretendard-Bold'),
+        url(../fonts/Pretendard-Bold.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Pretendard SemiBold'), local('Pretendard-SemiBold'),
+        url(../fonts/Pretendard-SemiBold.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Pretendard Medium'), local('Pretendard-Medium'),
+        url(../fonts/Pretendard-Medium.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Pretendard Regular'), local('Pretendard-Regular'),
+        url(../fonts/Pretendard-Regular.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Pretendard Light'), local('Pretendard-Light'),
+        url(../fonts/Pretendard-Light.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 200;
+    src: local('Pretendard ExtraLight'), local('Pretendard-ExtraLight'),
+        url(../fonts/Pretendard-ExtraLight.woff) format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Pretendard Thin'), local('Pretendard-Thin'),
+        url(../fonts/Pretendard-Thin.woff) format('woff');
+  }
+
+

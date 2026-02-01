@@ -1,0 +1,26 @@
+{
+  "name": "python",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeamChoiKim/python.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/TeamChoiKim/python/issues"
+  },
+  "homepage": "https://github.com/TeamChoiKim/python#readme",
+  "dependencies": {
+    "command": "^1.1.1",
+    "commander": "^14.0.2"
+  }
+}
