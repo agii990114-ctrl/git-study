@@ -1,0 +1,35 @@
+# ---------- build stage ----------
+FROM python:3.13.11 AS build
+
+WORKDIR /workspace
+
+RUN apt-get update && apt-get upgrade -y
+
+# uv를 pip로 설치 (가장 안정적)
+RUN pip install --no-cache-dir uv
+
+# 의존성 파일 복사
+COPY pyproject.toml uv.lock ./
+
+# 가상환경 + 의존성 설치
+RUN uv sync --frozen --no-dev
+
+# 앱 소스 복사
+COPY . .
+
+
+# ---------- runtime stage ----------
+FROM python:3.13.11
+
+WORKDIR /workspace
+
+# build 결과 복사
+COPY --from=build /workspace /workspace
+
+# venv PATH 등록
+ENV PATH="/workspace/.venv/bin:$PATH"
+
+EXPOSE 8001
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
+
