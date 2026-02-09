@@ -1,0 +1,118 @@
+# # 1단계: 빌드 스테이지 (의존성 설치 및 가상환경 생성)
+# # 표준 파이썬 3.12 이미지를 사용하여 빌드 환경을 구성합니다.
+# FROM python:3.12 AS build
+
+# # [핵심] 공식 uv 이미지에서 실행 파일(uv, uvx)만 현재 빌드 환경의 /bin으로 복사합니다.
+# # 이렇게 하면 무거운 uv 이미지를 베이스로 쓰지 않고도 uv의 속도를 누릴 수 있습니다.
+# COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# # 컨테이너 내 작업 디렉토리를 /app으로 설정합니다.
+# WORKDIR /app
+
+# # 의존성 정의 파일인 pyproject.toml과 uv.lock을 먼저 복사합니다.
+# # 파일이 수정되지 않았다면 이 단계는 캐싱되어 빌드 속도가 빨라집니다.
+# COPY pyproject.toml uv.lock ./
+
+# # uv를 사용하여 라이브러리를 설치합니다. 
+# # --frozen: lock 파일과 실제 설치 환경이 완벽히 일치하도록 강제합니다.
+# # 이 과정을 거치면 /app/.venv 폴더에 가상환경과 패키지들이 생성됩니다.
+# RUN uv sync --frozen
+
+# # 프로젝트의 나머지 소스 코드들을 복사합니다.
+# COPY . .
+
+
+# # 2단계: 실행 스테이지 (최종 결과물만 담아 가볍게 만들기)
+# # 빌드 도구들이 빠진 깨끗한 파이썬 이미지를 새로 가져옵니다.
+# FROM python:3.12
+
+# # 다시 작업 디렉토리를 설정합니다.
+# WORKDIR /app
+
+# # [핵심] 1단계(build)에서 생성된 '가상환경(.venv)' 폴더만 통째로 복사해옵니다.
+# # 소스 코드뿐만 아니라 이미 설치된 라이브러리들을 그대로 가져오는 것입니다.
+# COPY --from=build /app/.venv /app/.venv
+# COPY . .
+
+# # 환경 변수 PATH에 가상환경의 실행 경로를 추가합니다. 
+# # 이렇게 하면 'uvicorn' 같은 명령어를 가상환경 밖에서도 바로 쓸 수 있습니다.
+# ENV PATH="/app/.venv/bin:$PATH"
+
+# # FastAPI가 기본적으로 사용할 8000번 포트를 안내합니다.
+# EXPOSE 8000
+
+# # 서버를 실행합니다.
+# # --host 0.0.0.0
+
+
+
+# FROM python:3.9
+
+
+# WORKDIR /code
+
+
+# COPY ./requirements.txt /code/requirements.txt
+
+
+# RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+
+
+# COPY ./app /code/app
+
+
+# CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+
+
+
+# ---------------------------------------------------------
+
+    # 1. 베이스 이미지 설정
+# 파이썬 3.12 버전의 'slim' 이미지를 사용합니다. 
+# 일반 이미지보다 불필요한 패키지를 제거하여 용량이 훨씬 가볍습니다.
+FROM python:3.12-slim 
+#as build
+
+# 2. uv 설치 (핵심 기법)
+# 별도의 설치 스크립트 없이, 공식 uv 이미지에 저장된 실행 파일들을 
+# 현재 내 이미지의 /bin 폴더로 바로 복사해옵니다. 가장 빠르고 안전한 설치 방식입니다.
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# RUN apt-get update
+# RUN apt-get upgrade -y
+# RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+# RUN pip install uv
+
+# 3. 작업 디렉토리 설정
+# 이후 진행되는 모든 명령어는 컨테이너 안의 /app 폴더를 기준으로 실행됩니다.
+WORKDIR /app
+
+# 4. 소스 코드 복사
+# 내 컴퓨터의 현재 폴더(.)에 있는 모든 파일을 컨테이너의 /app 폴더로 복사합니다.
+COPY . /app
+
+# 5. 의존성 설치
+# uv sync: pyproject.toml 등을 읽어 라이브러리를 설치하고 가상환경(.venv)을 만듭니다.
+# --frozen: lock 파일과 일치하지 않으면 에러를 내어 환경 일관성을 보장합니다.
+# --no-cache: 빌드 후 캐시를 지워 전체 이미지 용량을 줄입니다.
+RUN uv sync --frozen --no-cache
+
+# FROM python:3.12-slim
+
+# WORKDIR /workspace
+
+# COPY --from=build /app /workspace
+
+# ENV PATH="/workspace/.venv/bin:$PATH"
+
+EXPOSE 8000
+
+#CMD ["uv", "run", "uvicorn", "main:app", "--port", "8000", "--host", "0.0.0.0"]
+# 6. 애플리케이션 실행
+# .venv 안에 설치된 fastapi 실행 파일을 직접 호출합니다.
+# run main.py: main.py 파일에 있는 FastAPI 앱을 자동으로 찾아 실행합니다.
+# --port 80: 컨테이너 내부 80번 포트로 서비스합니다.
+# --host 0.0.0.0: 외부 접속을 허용합니다.
+CMD [".venv/bin/fastapi", "run", "main.py", "--port", "8000", "--host", "0.0.0.0"]
+
+# ----------------------------------------------------------------------
