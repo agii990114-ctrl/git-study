@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileUpload</title>
+</head>
+<body>
+  <header>
+    <h1>File Upload</h1>
+  </header>
+  <main>
+    <form action="http://localhost:8000/upload" method="post" enctype="multipart/form-data">
+      <div class="form">
+        <input type="text" name="txt" id="txt"  />
+      </div>
+      <div class="form">
+        <input type="file" name="file" id="file" multiple accept="image/*" />  
+        <!-- <input type="file" name="file" id="file2" accept="image/*" />   -->
+        <input type="submit" value="파일업로드">
+      </div>
+    </form>
+  </main>
+</body>
+</html>
