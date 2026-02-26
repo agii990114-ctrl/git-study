@@ -1,0 +1,51 @@
+# 1. 베이스 이미지 지정: 우분투 24.04 버전을 기반으로 시작합니다.
+FROM ubuntu:24.04
+
+# 2. 설치 자동화 설정: 패키지 설치 중 지역 선택 등 사용자의 입력을 요구하는 창이 뜨지 않게 차단합니다.
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 3. 필수 패키지 설치:
+# - apt update: 패키지 목록 업데이트
+# - openssh-server: 외부 접속을 위한 SSH 서버
+# - sudo: 일반 계정에서 관리자 권한을 쓸 수 있게 해주는 도구
+RUN apt update
+RUN apt install -y openssh-server sudo
+
+# 4. 서비스 디렉토리 생성: SSH 실행을 위해 필요한 런타임 디렉토리를 미리 만듭니다.
+RUN mkdir /var/run/sshd
+
+# 5. 보안 설정 (중요): 
+# - root 계정의 SSH 직접 접속을 'no'로 설정하여 차단합니다. 
+# - 보통 일반 계정(study)으로 들어온 뒤 sudo를 쓰는 것이 더 안전합니다.
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+
+# 6. root 비밀번호 설정: 관리자 계정의 비밀번호를 '1234'로 지정합니다.
+RUN echo 'root:1234' | chpasswd
+
+# 7. 일반 사용자 계정 생성:
+# - useradd -m: 홈 디렉토리(/home/study) 생성
+# - -s /bin/bash: 기본 쉘을 bash로 설정
+RUN useradd -m -s /bin/bash study
+
+# 8. 권한 부여: study 계정이 sudo 명령을 쓸 때 비밀번호를 묻지 않도록 설정합니다.
+RUN echo "study ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# 9. SSH 키 인증 준비:
+# - .ssh 폴더 생성 및 보안 권한(700: 나만 읽고 쓰기 가능) 설정
+RUN mkdir /home/study/.ssh
+RUN chmod 700 /home/study/.ssh
+
+# 10. 공개키 복사: 호스트 PC에 있는 'authorized_keys'를 컨테이너 안으로 복사합니다.
+# 이 파일에 내 PC의 공개키가 있어야 비밀번호 없이 로그인이 가능합니다.
+COPY authorized_keys /home/study/.ssh/authorized_keys
+
+# 11. 소유권 변경: 복사된 파일들의 주인(owner)을 'study' 유저로 바꿉니다.
+RUN chown -R study:study /home/study/.ssh
+
+# 12. 포트 개방: 컨테이너의 22번 포트(SSH 기본값)를 열어둡니다.
+EXPOSE 22
+
+# 13. 컨테이너 실행 명령어: 
+# - /usr/sbin/sshd: SSH 데몬 실행
+# - -D: 백그라운드가 아닌 포그라운드에서 실행 (이래야 컨테이너가 바로 종료되지 않습니다.)
+CMD ["/usr/sbin/sshd", "-D"]
