@@ -1,4 +1,4 @@
-FROM us:1
+FROM uv:1
 
 WORKDIR /workspace
 

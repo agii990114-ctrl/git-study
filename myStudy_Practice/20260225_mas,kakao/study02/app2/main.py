@@ -25,16 +25,16 @@ oauth.register(
 )
 
 redis_client1 = redis.Redis(
-  host = "redis",
-  port = 6379,
-  db = 0,
+  host = settings.redis_host,
+  port = settings.redis_port,
+  db = settings.redis_access_db,
   decode_responses=True
 )
 
 redis_client2 = redis.Redis(
-  host = "redis",
-  port = 6379,
-  db = 1,
+  host = settings.redis_host,
+  port = settings.redis_port,
+  db = settings.redis_refresh_db,
   decode_responses=True
 )
 
