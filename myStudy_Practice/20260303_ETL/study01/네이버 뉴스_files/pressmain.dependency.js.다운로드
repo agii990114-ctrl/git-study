@@ -1,0 +1,1049 @@
+/*!
+ * JavaScript Cookie v2.2.0
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+(function(b){var d=false;
+if(typeof define==="function"&&define.amd){define(b);
+d=true
+}if(typeof exports==="object"){module.exports=b();
+d=true
+}if(!d){var a=window.Cookies;
+var c=window.Cookies=b();
+c.noConflict=function(){window.Cookies=a;
+return c
+}
+}}(function(){function b(){var f=0;
+var c={};
+for(;
+f<arguments.length;
+f++){var d=arguments[f];
+for(var e in d){c[e]=d[e]
+}}return c
+}function a(d){function c(r,p,l){var t;
+if(typeof document==="undefined"){return
+}if(arguments.length>1){l=b({path:"/"},c.defaults,l);
+if(typeof l.expires==="number"){var h=new Date();
+h.setMilliseconds(h.getMilliseconds()+l.expires*86400000);
+l.expires=h
+}l.expires=l.expires?l.expires.toUTCString():"";
+try{t=JSON.stringify(p);
+if(/^[\{\[]/.test(t)){p=t
+}}catch(n){}if(!d.write){p=encodeURIComponent(String(p)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g,decodeURIComponent)
+}else{p=d.write(p,r)
+}r=encodeURIComponent(String(r));
+r=r.replace(/%(23|24|26|2B|5E|60|7C)/g,decodeURIComponent);
+r=r.replace(/[\(\)]/g,escape);
+var k="";
+for(var o in l){if(!l[o]){continue
+}k+="; "+o;
+if(l[o]===true){continue
+}k+="="+l[o]
+}return(document.cookie=r+"="+p+k)
+}if(!r){t={}
+}var s=document.cookie?document.cookie.split("; "):[];
+var q=/(%[0-9A-Z]{2})+/g;
+var m=0;
+for(;
+m<s.length;
+m++){var j=s[m].split("=");
+var g=j.slice(1).join("=");
+if(!this.json&&g.charAt(0)==='"'){g=g.slice(1,-1)
+}try{var f=j[0].replace(q,decodeURIComponent);
+g=d.read?d.read(g,f):d(g,f)||g.replace(q,decodeURIComponent);
+if(this.json){try{g=JSON.parse(g)
+}catch(n){}}if(r===f){t=g;
+break
+}if(!r){t[f]=g
+}}catch(n){}}return t
+}c.set=c;
+c.get=function(e){return c.call(c,e)
+};
+c.getJSON=function(){return c.apply({json:true},[].slice.call(arguments))
+};
+c.defaults={};
+c.remove=function(f,e){c(f,"",b(e,{expires:-1}))
+};
+c.withConverter=a;
+return c
+}return a(function(){})
+}));function parseMultilineStrFunction(a){var b=/\/\*!?(?:\@preserve)?[ \t]*(?:\r\n|\n)([\s\S]*?)(?:\r\n|\n)\s*\*\//;
+var c=b.exec(a.toString())[1];
+return c||""
+}function escapeHtmlChar(a){return a.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/'/g,"&apos;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+}function shuffle(d){var b;
+var a;
+for(var c=d.length-1;
+c>0;
+c--){b=Math.floor(Math.random()*(c+1));
+a=d[c];
+d[c]=d[b];
+d[b]=a
+}}function convertNodeListToArray(a){return Array.apply(null,a)
+}function cloneDeep(a){return JSON.parse(JSON.stringify(a))
+}function getOffset(a){var b=a.getBoundingClientRect();
+return{top:b.top+window.pageYOffset,left:b.left+window.pageXOffset}
+}function getHeight(c){var b=c.style.cssText;
+var a;
+c.style.display="block";
+c.style.visibility="hidden";
+a=c.offsetHeight;
+c.style.cssText=b;
+return a
+}function loadImage(c,a){var b=convertNodeListToArray(c.querySelectorAll("img["+a+"]"));
+b.forEach(function(d){var e=d.getAttribute(a);
+if(e!==null){d.setAttribute("src",e);
+d.removeAttribute(a)
+}})
+}function isBackForwardNavigated(){var b=window.performance;
+var a=(b&&b.navigation&&(b.navigation.type===(b.navigation.TYPE_BACK_FORWARD||2)));
+return a
+};function Accordion(l,B){var v=$(l);
+if(!v[0]){return
+}var k="is_open";
+var w=(B&&B.maxItemSizePerPage)||5;
+var p=(B&&B.moreButtonText)||"더보기";
+var e=(B&&"rotationAuto" in B)?B.rotationAuto:true;
+var x=(B&&B.rotationIntervalMS)||7000;
+var m=(B&&"rotationPageAuto" in B)?B.rotationPageAuto:true;
+var b=null;
+var n=B&&B.onOpenItem;
+var A=null;
+var y=null;
+var h=false;
+var i=v.find("._accordion_item");
+var o=v.find("._accordion_item_header");
+o.each(function(D){var C=$(this);
+C.on("click",function(E){f(C,D,E)
+})
+});
+var j=v.find("._refresh_btn");
+j.on("click",function(){q()
+});
+u();
+return{activate:g,deactivate:d,reactivateAt:c,getState:s};
+function u(){y=r();
+var D=y.peekPageInfo();
+h=D.totalPage>1;
+if(!h){v.find("._refresh_btn_warp").hide()
+}var C=(B&&B.page)||1;
+c(C)
+}function r(){var C=PagingHelper({itemSize:i.size(),exposeSize:w,validationSkip:true});
+return C
+}function g(){if(e){b=setInterval(E,x)
+}function E(){var G=y.peekPageInfo();
+var F=D();
+if(m&&h&&F===G.beginIndex){q()
+}else{a(F)
+}}function D(){A=C();
+return A
+}function C(){if(A===null){return 0
+}var F=y.peekPageInfo();
+if((A<F.beginIndex)||(A>=(F.endIndex-1))){return F.beginIndex
+}else{return A+1
+}}}function d(){if(b!==null){clearInterval(b);
+b=null
+}}function z(){d();
+g()
+}function c(D){y.setPage(D+1);
+var C=y.peekPageInfo();
+a(C.beginIndex);
+z();
+t(C.page)
+}function s(){return{maxItemSizePerPage:w,page:y.getPage(),rotationAuto:e,rotationIntervalMS:x,}
+}function a(D){i.removeClass(k);
+A=D;
+var C=$(i[A]);
+C.addClass(k);
+if(typeof n==="function"){n(C)
+}}function t(F){y.setPage(F+1);
+var D=y.peekPageInfo();
+E(D);
+C(D.beginIndex,D.endIndex-1);
+function E(J){var G=$("#feedRefreshButtonTemplate").html();
+var I=Handlebars.compile(G);
+var H=I({currentPage:J.page,totalPage:J.totalPage,buttonText:p});
+j.html(H)
+}function C(H,G){i.each(function(J){var I=$(this);
+if((H<=J)&&(J<=G)){I.show()
+}else{I.hide()
+}})
+}}function f(E,C,F){var D=C===A;
+if(!D){F.preventDefault();
+a(C);
+z();
+nclk(F,$(E).data("open-click-code"),"","")
+}else{nclk(F,$(E).data("link-click-code"),"","")
+}}function q(){var C=y.getPageInfo();
+c(C.page)
+}};function ScrollForNative(g,r){var l=$(g);
+if(!l[0]){return
+}var m=l.find("._next_btn");
+var h=l.find("._prev_btn");
+var p=l.find("._scroller")[0];
+var a=l.find("._page_indicators ._page_indicator");
+var s=(r&&r.scrollDistanceRate)||0.9;
+var b=r&&r.onApplyScrollNavState;
+o();
+e();
+if(r&&r.enableResize){$(window).on("resize",function(){o()
+})
+}return{activate:e,deactivate:d,next:k,prev:k,scrollTo:c,scrollBy:n};
+function e(){m.on("click",q);
+h.on("click",i)
+}function d(){m.off("click",q);
+h.off("click",i)
+}function n(t){this.scrollTo(p.scrollLeft+t)
+}function c(t){$(p).stop().animate({scrollLeft:t},250,function(){o()
+})
+}function q(){k()
+}function i(){j()
+}function k(){c(p.scrollLeft+f())
+}function j(){c(p.scrollLeft-f())
+}function o(){var x=Math.ceil(p.scrollLeft);
+var v=p.scrollWidth-p.offsetWidth;
+var u=x<=0;
+var w=x>=v;
+if(b){b(u,w,h,m)
+}else{h.attr("disabled",u);
+m.attr("disabled",w)
+}if(a){var t=x/(v/(a.length-1));
+a.removeClass("is_on").attr("aria-selected","false");
+$(a[t]).addClass("is_on").attr("aria-selected","true")
+}}function f(){return p.offsetWidth*s
+}};function Tab(a,c){var f=$(a);
+if(!f[0]){return
+}var h=c&&c.onChange;
+var e=(c&&typeof c.defaultIndex==="number")?c.defaultIndex:0;
+var g=f.find("._tab_item");
+var b=f.find("._tab_panel");
+var i=null;
+k();
+return{openTab:d,getState:j};
+function k(){g.each(function(l){$(this).on("click",function(m){m.preventDefault();
+d(l);
+if(typeof h==="function"){h(m,g[l],b[l],l)
+}})
+});
+d(e)
+}function d(l){if(i===l){return
+}g.attr("aria-selected","false");
+g.eq(l).attr("aria-selected","true");
+b.hide();
+b.eq(l).show();
+i=l
+}function j(){return{activeIndex:i,totalTabs:g.length}
+}};function BrickGrid(c,e,d){var h=$(c);
+var j=h.find("._brick_column");
+var b=f();
+var l=[];
+(function(){var n=j.eq(0).children().toArray();
+var o=i(n);
+var m=o(b);
+if(b>1){g(m)
+}j.each(function(p){if(p===0){l[p]=[n];
+return
+}if(p===(b-1)){l[p]=m;
+return
+}var q=p+1;
+l[p]=o(q)
+})
+})();
+$(window).on("resize",a);
+function a(){var m=b;
+var n=f();
+if(m!==n){b=n;
+k();
+if(d){d()
+}}}function k(){var n=b-1;
+var m=l[n];
+g(m)
+}function g(o){var m=j.filter(":visible");
+h.css("height",h.height());
+j.css("display","none");
+m.each(function(p){var q=o[p];
+n(this,q)
+});
+j.css("display","");
+h.css("height","");
+function n(q,p){p.forEach(function(r){q.appendChild(r)
+})
+}}function i(o){var p=o.map(function(q){return{el:q,height:q.offsetHeight}
+});
+return function(H){var I=m(p,H)||p;
+var z=[];
+var q={};
+I.forEach(function(M,L){var K=M.staticPosition;
+if(K){q[K.column+":"+K.row]=M;
+return
+}z.push(M)
+});
+var v=z.length;
+var C=n(0,H);
+var s=n([],H);
+var G;
+var t;
+var x;
+var y;
+var J;
+var r;
+var A;
+var w;
+for(var B=0;
+B<v;
+B++){G=D(C);
+t=G+1;
+x=s[G].length+1;
+y=t+":"+x;
+J=z[B];
+r=J.el;
+A=J.height;
+w=q[y];
+if(w){r=w.el;
+A=w.height;
+delete q[y]
+}s[G].push(r);
+C[G]+=A;
+if(w){B=B-1
+}}for(var u in q){try{E(q[u]);
+delete q[u]
+}catch(F){}}return s;
+function E(M){var K=M.staticPosition.column-1;
+var L=M.staticPosition.row-1;
+s[K][L]=M.el
+}function D(L){var K=Math.min.apply(null,L);
+return L.indexOf(K)
+}};
+function n(r,q){return Array.apply(null,Array(q)).map(function(){return Array.isArray(r)?r.slice(0):r
+})
+}function m(s,r){if(!e){return null
+}var q=cloneDeep(s);
+q.forEach(function(u,t){u.el=s[t].el
+});
+return e(q,r)||null
+}}function f(){return j.filter(":visible").length
+}};function BrickGridForEditByPress(d){BrickGrid(d,a,c);
+function a(A,z){if(z===1){return
+}var k=$("._channel_news_card_wrapper").size()||0;
+var w=m(A,"_breaking_live");
+var h=m(A,"_channel_news_card_wrapper");
+var g=m(A,"_horizontal_scroll_type");
+var p=m(A,"_series_feed_card_wrapper");
+var f=m(A,"_correct_banner");
+var n=m(A,"_special_report_card_wrapper_0");
+var s=m(A,"_special_report_card_wrapper_1");
+var t=m(A,"_special_report_card_wrapper_2");
+var r=m(A,"_journalist_feed_card_wrapper");
+var v=m(A,"_card_ad");
+var o=m(A,"_card_ad_secondary");
+var y=m(A,"_long_subscribe_banner");
+var l=m(A,"_issue_feed_card_wrapper");
+if(z===2&&k===0){x(w,1,2);
+x(g,2,1);
+x(p,2,9);
+x(f,2,7);
+x(n,2,4);
+x(s,1,w?13:12);
+x(r,2,6);
+x(v,2,8);
+x(o,1,w?7:6);
+x(l,1,w?6:5);
+return A
+}if(z!==2&&k===0){x(w,1,2);
+x(h,1,w?3:2);
+x(g,2,1);
+x(p,2,6);
+x(f,3,5);
+x(n,2,3);
+x(s,1,w?10:9);
+x(r,3,4);
+x(v,2,5);
+x(o,3,3);
+x(l,1,w?5:4);
+return A
+}if(z===3){x(y,z,1)
+}x(w,1,2);
+x(h,1,w?3:2);
+x(g,2,1);
+var i=y?2:z;
+var u=(y||z===2)?5:3;
+x(v,i,u);
+x(o,1,w?5:4);
+var e=b($("._journalist_feed_card_wrapper"));
+if(e&&k>3){x(r,1,w?4:3)
+}var j=b($("._series_feed_card_wrapper"));
+if(j&&k>3){x(p,2,3);
+x(f,2,4)
+}if(k>3){if(z===3){x(l,3,4)
+}else{x(l,2,6)
+}}return A;
+function m(D,C){try{var B=q(D,C);
+return D[B]
+}catch(E){}}function q(D,C){var B=null;
+D.some(function(G,E){var F=$(G.el).hasClass(C);
+if(F){B=E;
+return true
+}});
+return B
+}function x(D,B,C){try{D.staticPosition={column:B,row:C}
+}catch(E){}}}function c(){window.gladsdk.cmd.push(function(){var e=[];
+e.push(window.gladsdk.findAdSlot("glad_ad_sidebox"));
+e.push(window.gladsdk.findAdSlot("glad_ad_sidebox_secondary"));
+var f=window.gladsdk.setAdDeduplication("pressmain_ad");
+f.displayAds(e)
+})
+}function b(f){var e=f.find("._cns_main_subscribe");
+if(e&&e.length>0&&e.css("display")==="block"){return true
+}return false
+}};function SubscribeActionCaller(b){if(!b){return
+}return{addChannels:a,removeChannel:h,addFeedChannel:f,removeFeedChannel:c,setNotificationChannel:e,toastBottomLayer:g,toastBottomLayerV2:d};
+function a(k){var j=b+"/channel/addChannels?officeIds="+k.officeId;
+i({url:j,async:false,success:k.success||null,error:k.error||null})
+}function h(k){var j=b+"/channel/removeChannel?officeId="+k.officeId;
+i({url:j,async:false,success:k.success||null,error:k.error||null})
+}function f(k){var j=b+"/channel/addFeedChannel?channelKey="+k.channelKey+"&channelGroup="+k.channelGroup;
+i({url:j,async:false,success:k.success||null,error:k.error||null})
+}function c(k){var j=b+"/channel/removeFeedChannel?channelKey="+k.channelKey+"&channelGroup="+k.channelGroup;
+i({url:j,async:false,success:k.success||null,error:k.error||null})
+}function e(k){var j=b+"/channel/setNotification?officeIds="+k.officeId+"&all="+k.notification;
+i({url:j,async:false,success:k.success||null,error:k.error||null})
+}function i(j){$.ajax({method:"POST",url:j.url,async:j.async,xhrFields:{withCredentials:true},success:j.success,error:j.error})
+}function g(l,m){var k='<p class="lt_t"><span class="alt_name">'+l+"</span> "+m+"</p>";
+var j=$(".layer_toast");
+j.hide().empty();
+j.append(k).show();
+setTimeout(function(){j.hide().empty()
+},2000)
+}function d(k,l){var j=new Toast().init();
+j.show(k,l)
+}};function PagingHelper(d){var j=d.itemSize||0;
+var f=d.exposeSize||0;
+var l=d.validationSkip;
+if(j<=0||f<=0||(!l&&(j<f))){return
+}var i=0;
+var g=parseInt(j/f,10);
+if(j%f!=0){g+=1
+}return{init:k,getPageInfo:e,peekPageInfo:c,getPage:h,setPage:b};
+function k(){a()
+}function e(){a();
+return c()
+}function c(){var m=(i-1)*f;
+var n=(m+f)>j?j:(m+f);
+return{page:i,beginIndex:m,endIndex:n,totalPage:g}
+}function a(){i=i+1>g?1:i+1
+}function b(m){if(m===0){i=0
+}else{i=m-1
+}}function h(){return i
+}};function SubscribeBannerShortCardAction(c){var a=c.wrapper;
+if(!a[0]){return
+}var f=a.find("._item");
+var j=a.find("._item_wrapper");
+f.on("click",function(m){var l=$(this);
+var k=l.attr("aria-checked")==="true";
+if(k){nclk(m.originalEvent,c.nclick_uncheck,"","")
+}else{nclk(m.originalEvent,c.nclick_check,"","")
+}l.attr("aria-checked",!k);
+d()
+});
+var h=SubscribeActionCaller(c.domain);
+var b="dimmed";
+var g=a.find("._confirm_btn");
+g.on("click",function(n){var m=$(this);
+if(m.hasClass(b)){nclk(n.originalEvent,c.nclick_checkAll,"","");
+i();
+d()
+}else{nclk(n.originalEvent,c.nclick_subscribe,"","");
+var p=[];
+a.find('._item[aria-checked="true"]').each(function(){var q=$(this);
+p.push(q.data("office_id"))
+});
+var k=p.join(",");
+h.addChannels({officeId:k,success:o,error:l})
+}function o(q){if(q==="success"){location.reload()
+}else{l()
+}}function l(){h.toastBottomLayerV2("","구독 설정이 실패하였습니다.");
+e()
+}});
+function i(){j.each(function(){var k=$(this);
+var l=k.find("a");
+if(k.css("display")!=="none"){l.attr("aria-checked","true")
+}})
+}function e(){f.attr("aria-checked",false);
+g.empty();
+g.addClass(b);
+g.append("언론사 전체 선택")
+}function d(){var k=a.find('._item[aria-checked="true"]').size();
+if(k<=0){g.addClass(b);
+g.html("언론사 전체 선택")
+}else{g.removeClass(b);
+g.html(k+"개 언론사 구독")
+}}return{unCheckAll:e}
+};function PressMainStatusCard(a){a=$(a);
+if(!a[0]){return
+}};function NewsFlashCard(f){f=$(f);
+if(!f[0]){return
+}var a=f.find("._item_list");
+var e=_NewsFlashCardAutoRolling(a);
+e.showCurrentItem(true);
+e.play();
+f.find("._toggle_btn").on("click",b);
+function b(g){var h=$(g.currentTarget);
+if(h.hasClass("is_close")){nclk(g.originalEvent,"home.newsflashinfo","","");
+h.removeClass("is_close");
+e.stop();
+e.showAllItem();
+c()
+}else{nclk(g.originalEvent,"home.newsflashinfocl","","");
+d();
+setTimeout(function(){h.addClass("is_close");
+e.showCurrentItem(true);
+e.play()
+},400)
+}}function c(){f.removeClass("cjs_nf_close").addClass("cjs_nf_open")
+}function d(){a.get(0).scrollTop=0;
+f.removeClass("cjs_nf_open").addClass("cjs_nf_close")
+}};function _NewsFlashCardAutoRolling(a){var c=4000;
+a=$(a);
+var e=a.find("._item");
+var k=0;
+var l=null;
+var g=null;
+return{play:b,stop:j,showAllItem:d,showCurrentItem:i};
+function b(){j();
+l=setTimeout(function(){f();
+g=setTimeout(function(){h();
+i();
+b()
+},400)
+},c)
+}function j(){clearTimeout(l);
+clearTimeout(g)
+}function d(){j();
+e.css("display","").removeClass("cjs_nf_rolling cjs_nf_rolling_end cjs_nf_rolling_fadein")
+}function i(m){e.css("display","none").removeClass("cjs_nf_rolling cjs_nf_rolling_end cjs_nf_rolling_fadein");
+if(m){e.eq(k).addClass("cjs_nf_rolling_fadein").css("display","")
+}else{e.eq(k).addClass("cjs_nf_rolling").css("display","")
+}}function f(){e.eq(k).removeClass("cjs_nf_rolling_fadein").addClass("cjs_nf_rolling_end")
+}function h(){k=k+1;
+if(!e[k]){k=0
+}}};function FeedAccordionCard(i,t){i=$(i);
+if(!i[0]){return
+}var g=i;
+var h=g.attr("persist-key")||"persist_key";
+var r=1;
+p();
+o();
+var k=(t&&t.accordionConfig)||{};
+k.page=r;
+var b=Accordion(i,k);
+var a=999;
+var j="999+";
+var s=i.find("._comp_em");
+var l=(s&&s.length>0)?s.data("subscribe-count"):0;
+var u=t&&t.subscribeDomain;
+var m=t&&t.pressMainStatusSubscribeCountClassName;
+var e=(t&&t.subscribeSuccessText)||"구독하였습니다.";
+var f=(t&&t.subscribeFailureText)||"구독에 실패하였습니다.";
+var c=(t&&t.unsubscribeSuccessText)||"구독 해제하였습니다.";
+var d=(t&&t.unsubscribeFailureText)||"구독 해제에 실패하였습니다.";
+var q=t&&t.onSubscribeSuccess;
+i.find("._cns_btn_help").on("click",function(){if($(this).attr("aria-expanded")==="true"){$(this).attr("aria-expanded","false")
+}else{$(this).attr("aria-expanded","true")
+}});
+i.find("._cns_btn_hclose").on("click",function(){i.find("._cns_btn_help").attr("aria-expanded","false")
+});
+var n=SubscribeActionCaller(u);
+i.find("._subscribe_btn").on("click",function(A){A.stopPropagation();
+var G=$(this);
+var D=G.data("channel-name");
+var C=G.data("channel-key");
+var z=G.data("channel-group");
+var x=G.data("click-code");
+var F="add";
+nclk(A,x,"","");
+n.addFeedChannel({channelKey:C,channelGroup:z,success:E,error:B});
+function E(H){if(H==="SUCCESS"){if(typeof q==="function"){q(F,G)
+}if(F==="add"){G.attr("disabled","true");
+G.attr("aria-pressed","true")
+}var J=F==="add"?v(true):w(true);
+n.toastBottomLayerV2(D,J);
+y(F)
+}else{if(H==="NEED_TO_LOGIN"){var I=location.href;
+location.href="https://nid.naver.com/nidlogin.login?url="+I
+}else{B()
+}}}function B(){var H=F==="add"?v(false):w(false);
+n.toastBottomLayerV2(D,H)
+}function v(H){return H?e:f
+}function w(H){return H?c:d
+}function y(K){var J=i.find("._comp_em");
+var I=$("._press_main_status_wrapper");
+var H=I.find("."+m);
+if(K==="add"){l++
+}else{l--
+}if(l>a){J.text(j);
+H.text(j);
+return
+}if(l>0){J.text(l);
+H.text(l);
+if(K==="add"){i.find("._cns_main_subscribe").css("display","block");
+i.find("._cns_main_nonSubscribe").css("display","none");
+i.find("._help_subscribe").css("display","block");
+i.find("._help_nonSubscribe").css("display","none");
+i.find("._cns_more_link_subscribe").css("display","block");
+i.find("._cns_more_link_nonSubscribe").css("display","none")
+}}else{J.text("");
+H.text("");
+i.find("._cns_main_subscribe").css("display","none");
+i.find("._cns_main_nonSubscribe").css("display","block");
+i.find("._help_subscribe").css("display","none");
+i.find("._help_nonSubscribe").css("display","block");
+i.find("._cns_more_link_subscribe").css("display","none");
+i.find("._cns_more_link_nonSubscribe").css("display","block")
+}}});
+function o(){$("body").on("click","a",function(){$.persist(h,{contents:g.html(),page:b.getState().page})
+})
+}function p(){var v=$.persist(h);
+if(v){g.html(v.contents);
+r=v.page
+}}};function FeedAccordionIssueCard(e,c){e=$(e);
+if(!e[0]){return
+}var b={moreButtonText:"다른 이슈 더보기"};
+var a={accordionConfig:b,subscribeDomain:c,pressMainStatusSubscribeCountClassName:"_issue_comp_em",subscribeSuccessText:"이슈를 구독하였습니다.",subscribeFailureText:"이슈 구독에 실패하였습니다.",unsubscribeSuccessText:"이슈를 구독 해제하였습니다.",unsubscribeFailureText:"이슈 구독 해제에 실패하였습니다.",onSubscribeSuccess:d};
+function d(f,g){if(f==="add"){g.find("span.blind").text("구독중")
+}}FeedAccordionCard(e,a)
+};function FeedCard(h,c,w){h=$(h);
+if(!h[0]){return
+}var f=h;
+var g=f.attr("persist-key")||"persist_key";
+var s=0;
+p();
+n();
+var d="journalist";
+var b="series";
+const a=999;
+const j="999+";
+var v=h.find("._comp_em");
+var l=(v&&v.length>0)?v.data("subscribe-count"):0;
+var e=h.find("._cns_main_subscribe");
+var r=(e&&e.length>0&&e.css("display")==="block");
+var k=e.data("subscribe-display-count")||0;
+var o=h.find("._item_list").find("._item");
+var u;
+q();
+if(h.find("._refresh_btn")[0]){t()
+}var i;
+if(c===b){h.find("._item").each(function(){var z=$(this);
+var y=String(Math.floor(Math.random()*7)+1);
+var x="0"+y;
+z.addClass("css_bgtype_"+x)
+})
+}h.find("._cns_btn_help").on("click",function(){if($(this).attr("aria-expanded")==="true"){$(this).attr("aria-expanded","false")
+}else{$(this).attr("aria-expanded","true")
+}});
+h.find("._cns_btn_hclose").on("click",function(){h.find("._cns_btn_help").attr("aria-expanded","false")
+});
+var m=SubscribeActionCaller(w);
+o.find("._subscribe_btn").on("click",function(I){var N=$(this);
+var L=N.data("channel_name");
+var K=N.data("channel_key");
+var H=N.data("channel_group");
+var G=N.data("channel_article_link");
+var x=N.hasClass("_non_sub");
+var B=D(c);
+var A=B.nextItemText;
+var z=B.nonSubNextItemClickCode;
+var F='<a href="'+G+'" class="cns_btn_subscription type_link" onclick="nclk(event, '+z+", '', '')\"><span class=\"blind\">구독중</span></a>";
+i="add";
+nclk(I,"home.edit"+(c===d?"j":"s")+"take","","");
+m.addFeedChannel({channelKey:K,channelGroup:H,success:M,error:J});
+function D(P){var O={nextItemText:"",nonSubNextItemClickCode:""};
+switch(P){case d:O.nextItemText='<span class="cns_state">구독중</span>';
+O.nonSubNextItemClickCode="'home.editjarticle'";
+break;
+case b:O.nextItemText='<span class="cns_state">구독중</span>';
+O.nonSubNextItemClickCode="'home.editseriescont'";
+break;
+default:break
+}return O
+}function M(O){if(O==="SUCCESS"){if(i==="add"){N.attr("disabled","true")
+}var Q=i==="add"?y(true):C(true);
+m.toastBottomLayerV2(L,Q);
+if(x){N.replaceWith(F)
+}else{N.replaceWith(A)
+}E(i,c)
+}else{if(O==="NEED_TO_LOGIN"){var P=location.href;
+location.href="https://nid.naver.com/nidlogin.login?url="+P
+}else{J()
+}}}function J(){var O=i==="add"?y(false):C(false);
+m.toastBottomLayerV2(L,O)
+}function y(O){if(c===d){return O?"기자를 구독하였습니다.":"기자 구독에 실패하였습니다."
+}else{if(c===b){return O?"채널을 구독하였습니다.":"채널 구독에 실패하였습니다."
+}}return null
+}function C(O){if(c===d){return O?"기자를 구독 해제하였습니다.":"기자 구독 해제에 실패하였습니다."
+}else{if(c===b){return O?"채널을 구독 해제하였습니다.":"채널 구독 해제에 실패하였습니다."
+}}return null
+}function E(T,P){var S=h.find("._comp_em");
+var R=$("._press_main_status_wrapper");
+var Q=P===d?"._journalist_comp_em":"._series_comp_em";
+var O=R.find(Q);
+if(T==="add"){l++
+}else{l--
+}if(l>a){S.text(j);
+O.text(j);
+return
+}if(l>0){S.text(l);
+O.text(l);
+if(T==="add"){h.find("._cns_main_subscribe").css("display","block");
+h.find("._cns_main_nonSubscribe").css("display","none");
+h.find("._help_subscribe").css("display","block");
+h.find("._help_nonSubscribe").css("display","none");
+h.find("._cns_more_link_subscribe").css("display","block");
+h.find("._cns_more_link_nonSubscribe").css("display","none")
+}}else{S.text("");
+O.text("");
+h.find("._cns_main_subscribe").css("display","none");
+h.find("._cns_main_nonSubscribe").css("display","block");
+h.find("._help_subscribe").css("display","none");
+h.find("._help_nonSubscribe").css("display","block");
+h.find("._cns_more_link_subscribe").css("display","none");
+h.find("._cns_more_link_nonSubscribe").css("display","block")
+}}});
+function q(){if(u){return
+}var y;
+var z=2;
+var x=4;
+var A=3;
+if(c===d){if(r){y=k<3?z:x
+}else{y=x
+}}else{y=A
+}u=PagingHelper({itemSize:o.size(),exposeSize:y,validationSkip:true});
+u.setPage(s)
+}function n(){$("body").on("click","a",function(){$.persist(g,{contents:f.html(),pagingHelper:u,page:u.getPage()})
+})
+}function p(){var x=$.persist(g);
+if(x){f.html(x.contents);
+s=x.page
+}}function t(){var A=h.find("._refresh_btn");
+var C=u.getPageInfo();
+B(C);
+if(r){z(C.page,C.totalPage)
+}y(C.beginIndex,C.endIndex);
+A.on("click",function(){var D=u.getPageInfo();
+B(D);
+if(r){z(D.page,D.totalPage)
+}y(D.beginIndex,D.endIndex)
+});
+function B(E){var D=$("#feedRefreshButtonTemplate").html();
+var F=Handlebars.compile(D);
+A.empty();
+A.append(F({currentPage:E.page,totalPage:E.totalPage,buttonText:x(c)}));
+return E
+}function y(E,F){var D=0;
+o.each(function(G){var H=$(this);
+if(G>=E&&G<F){D+=1;
+loadImage(this,"data-onshow-src");
+H.show()
+}else{H.hide()
+}})
+}function z(E,D){if(E===D){h.find("._type_link").css("display","block");
+h.find("._refresh_btn").css("display","none")
+}}function x(D){if(D===d){return"기자 더보기"
+}if(D===b){return"다음 연재 보기"
+}return"더보기"
+}}};function ChannelNewsCard(h,e){h=$(h);
+if(!h[0]){return
+}var a=h.find("._issue_scroll_wrapper");
+ScrollForNative(a,{scrollDistanceRate:0.7});
+var d=h.data("oid");
+h.find("._tab_item").on("click",g);
+var b=h.data("tab_expose_type");
+var f=h.find("#second");
+if(b==="MainSpecialReport"){f.click()
+}else{if(b==="Random"){var c=Math.floor(Math.random()*2)+1;
+if(c%2===0){f.click()
+}}}h.find("._channel_news_more").on("click",function(){var i=$(this);
+i.toggleClass("is_close")
+});
+h.find("._premium_info_btn").on("click",function(){var i=$(this);
+i.toggleClass("is_close")
+});
+h.find("._premium_info_close_btn").on("click",function(){h.find("._premium_info_btn").addClass("is_close")
+});
+h.on("click","._need_nclick",function(k){var i=$(this).data("click-code");
+var j=$(this).data("aid");
+var l=$(this).data("imp-index");
+nclickWithExt(k,i,d,j,l)
+});
+_ChannelNewsCardAjax(h,e);
+function g(){var m=$(this);
+var j=m.attr("id");
+var i=m.closest("._tab_list");
+l();
+k();
+function l(){i.find("._tab_item").each(function(){var n=$(this);
+if(n.attr("id")===j){n.find("a").attr("aria-selected","true")
+}else{n.find("a").attr("aria-selected","false")
+}})
+}function k(){var n=m.closest("._channel_wrapper");
+var r=n.data("headline_css");
+var q=n.find("._headline_tab_contents");
+var p=n.find("._second_tab_contents");
+var o=n.find("._headline_datetime");
+var s=n.find("._second_datetime");
+if(j==="headline"){p.hide();
+q.show();
+s.hide();
+o.show();
+n.addClass(r)
+}else{if(j==="second"){q.hide();
+loadImage(p[0],"data-onshow-src");
+p.show();
+o.hide();
+s.show();
+n.removeClass(r)
+}}}}}function nclickWithExt(g,a,c,f,i){var b=c.toString();
+var h=f?f.toString():undefined;
+var d='{"news": {"oid":"'+b+'", "aid": "'+h+'"}}';
+nclk(g,a,"",i,"",d)
+};function _ChannelNewsCardAjax(f,a){f=$(f);
+if(!f[0]){return
+}var c=f.find("._notification");
+c.on("click",function(){var g=$(this);
+b(g,true)
+});
+var e=f.find("._unNotification");
+e.on("click",function(){var g=$(this);
+b(g,false)
+});
+var d=SubscribeActionCaller(a);
+f.find("._channel_unsubscribe").on("click",function(){var i=$(this);
+var k=i.data("office_id");
+var h=i.data("office_name");
+d.removeChannel({officeId:k,success:j,error:g});
+function j(l){if(l){var m=i.closest(f);
+m.hide();
+m.removeClass("_channel_news_card_wrapper");
+d.toastBottomLayerV2(h,"언론사 구독 해지되었습니다.");
+location.reload()
+}else{g()
+}}function g(){d.toastBottomLayerV2(h,"언론사 구독 해지에 실패하였습니다.")
+}});
+function b(j,i){var m=j.data("office_id");
+var h=j.data("office_name");
+d.setNotificationChannel({officeId:m,notification:i,success:k,error:g});
+function k(n){if(n){j.hide();
+if(i){e.show();
+c.hide()
+}else{c.show();
+e.hide()
+}f.find("._channel_news_more").addClass("is_close");
+var o=l(true);
+d.toastBottomLayerV2(h,o)
+}else{g()
+}}function g(){var n=l(false);
+d.toastBottomLayerV2(h,n)
+}function l(n){if(i){return n?"언론사 알림이 설정 되었습니다.":"언론사 알림 설정이 실패하였습니다."
+}else{return n?"언론사 알림이 해지 되었습니다.":"언론사 알림 해지에 실패하였습니다."
+}}}};function ChannelMainNewsCard(c,a){c=$(c);
+if(!c[0]){return
+}var b=SubscribeActionCaller(a);
+c.find("._subscribe_btn").on("click",function(){var f=$(this);
+var h=f.data("office_id");
+var e=f.data("office_name");
+b.addChannels({officeId:h,success:g,error:d});
+function g(i){if(i==="success"){location.reload()
+}else{d()
+}}function d(){b.toastBottomLayerV2(e,"언론사 구독에 실패하였습니다.")
+}})
+};function SubscribeBannerShortCard(f,e){f=$(f);
+if(!f[0]){return
+}var a=f.find("._item");
+var c=f.find("._item_wrapper");
+d();
+var b=SubscribeBannerShortCardAction({wrapper:f,domain:e,nclick_check:"home.editrset",nclick_uncheck:"home.editrdel",nclick_checkAll:"home.editrsetall",nclick_subscribe:"home.editrallchk"});
+function d(){var h=PagingHelper({itemSize:a.size(),exposeSize:8,validationSkip:false});
+h.init();
+f.find("._refresh_btn").on("click",function(){b.unCheckAll();
+var i=h.getPageInfo();
+g(i.beginIndex,i.endIndex)
+});
+function g(i,j){c.each(function(k){var l=$(this);
+if(k>=i&&k<j){loadImage(l[0],"data-onshow-src");
+l.show()
+}else{l.hide()
+}})
+}}};function SubscribeBannerLongCard(a,g){a=$(a);
+if(!a[0]){return
+}var c="a";
+var h=a.find("._category_title_a");
+var k=a.find("._category_list_wrapper_a");
+var e=a.find("._category_title_b");
+var i=a.find("._category_list_wrapper_b");
+m();
+var d=$("._subscribe_toast_layer");
+var l=d.find("._subscribe_toast_btn");
+var j=a.find("._item");
+j.on("click",function(r){var q=$(this);
+var p=q.attr("aria-checked")==="true";
+if(p){nclk(r.originalEvent,"home.edittdel","","")
+}else{nclk(r.originalEvent,"home.edittset","","")
+}q.attr("aria-checked",!p);
+b()
+});
+a.find("._check_all_btn").on("click",function(){n();
+b()
+});
+var o=SubscribeActionCaller(g);
+l.on("click",function(){var s=[];
+a.find('._item[aria-checked="true"]').each(function(){var t=$(this);
+s.push(t.data("office_id"))
+});
+var p=s.join(",");
+o.addChannels({officeId:p,success:r,error:q});
+function r(t){if(t==="success"){location.reload()
+}else{q()
+}}function q(){o.toastBottomLayerV2("","구독 설정이 실패하였습니다.");
+f()
+}});
+function m(){a.find("._refresh_btn").on("click",function(){var p=c==="a"?"b":"a";
+j.attr("aria-checked","false");
+l.empty();
+d.hide();
+if(p==="a"){e.hide();
+i.hide();
+h.show();
+k.show()
+}else{if(p==="b"){h.hide();
+k.hide();
+e.show();
+i.each(function(r,q){loadImage(q,"data-onshow-src")
+});
+i.show()
+}}c=p
+})
+}function n(){if(c==="a"){k.find("._item").attr("aria-checked",true)
+}else{if(c==="b"){i.find("._item").attr("aria-checked",true)
+}}}function b(){var q=a.find('._item[aria-checked="true"]').size();
+var p=d.find("._subscribe_toast_btn");
+p.empty();
+if(q<=0){d.hide()
+}else{p.append(q+"개 언론사 구독");
+d.show()
+}}function f(){j.attr("aria-checked",false);
+l.empty();
+d.hide()
+}};function TabCard(h){h=$(h);
+if(!h[0]){return
+}var e=h;
+var c=e.attr("persist-key")||"persist_key";
+var a=0;
+f();
+g();
+var d={};
+d.defaultIndex=a;
+d.onChange=function(k,j){var i=$(j).data("nclick");
+if(i){nclk(k,i,"","")
+}};
+var b=Tab(h,d);
+function g(){$("body").on("click","a",function(){$.persist(c,{contents:e.html(),activeIndex:b.getState().activeIndex})
+})
+}function f(){var i=$.persist(c);
+if(i){e.html(i.contents);
+a=i.activeIndex
+}}};function HorizontalTypeCard(d,a){d=$(d);
+if(!d[0]){return
+}var c=d.find("._card_scroll_wrapper");
+ScrollForNative(c);
+var b=d.find("._toggle_btn");
+b.on("click",function(i){var h=$(this);
+f(h);
+g(h);
+function f(k){var j=k.closest("._toggle_layout_wrapper").find("._toggle_layout");
+var e=k.attr("aria-expanded")==="true";
+k.attr("aria-expanded",e?"false":"true");
+j.toggle(!e)
+}function g(j){var e=j.data("nclick");
+if(e){nclk(i.originalEvent,e,"","")
+}}});
+d.find("._toggle_close_btn").on("click",function(h){var g=$(this);
+b.attr("aria-expanded","false");
+g.parent().toggle(false);
+var f=g.data("nclick");
+if(f){nclk(h.originalEvent,f,"","")
+}});
+d.find("._broadcast_item").on("click",function(h){var g=$(this);
+var f=g.data("nclick");
+if(f){nclk(h.originalEvent,f,"","")
+}})
+};function SpecialReportCard(c,a){c=$(c);
+if(!c[0]){return
+}var b=SubscribeActionCaller(a);
+c.find("._subscribe_btn").on("click",function(){var f=$(this);
+var h=f.data("office_id");
+var e=f.data("office_name");
+b.addChannels({officeId:h,success:g,error:d});
+function g(i){if(i==="success"){location.reload()
+}else{d()
+}}function d(){b.toastBottomLayerV2(e,"언론사 구독에 실패하였습니다.")
+}})
+};function ArticleLinkParamsAppender(a){b("._cds_link","cds",a);
+b("._editn_link","type","editn");
+b("._newsflash_link","type","breakingnews");
+function b(c,d,e){$(c).each(function(){var f=$(this).attr("href");
+if(!f){return
+}if(f.indexOf("&"+d)>=0||f.indexOf("?"+d)>=0){return
+}if(f.split("?")[1]){f=f+"&"
+}else{f=f+"?"
+}f=f+d+"="+e;
+$(this).attr("href",f)
+})
+}};function WeeklySpecialReportCard(h){h=$(h);
+if(!h[0]){return
+}var d=h.find("._keyword_tab_wrapper");
+var b=h.find("._content_tab");
+b.each(function(i,k){loadImage(k,"data-onshow-src");
+var j=$(k).data("oid");
+$(k).on("click","._need_nclick",function(n){var l="home.wekeynews";
+var m=$(this).data("aid");
+nclickWithExt(n,l,j,m,"")
+})
+});
+h.find("._keyword_tab").on("click",f);
+if(h.find("._keyword_reload").length>0){h.find("._keyword_reload").on("click",g);
+var c=PagingHelper({itemSize:d.size(),exposeSize:6,validationSkip:false});
+c.getPageInfo()
+}if(h.find("._content_reload_button").length>0){h.find("._content_reload_button").on("click",a)
+}h.find("._help_button").on("click",function(k){var i=h.find("._help_button").attr("aria-expanded");
+var j=h.find("._help_layer").attr("aria-hidden");
+if(i==="true"){nclk(k,"home.wekeyinx","","")
+}else{nclk(k,"home.wekeyinform","","")
+}h.find("._help_button").attr("aria-expanded",!(i==="true"));
+h.find("._help_layer").attr("aria-hidden",!(j==="true"))
+});
+h.find("._help_close").on("click",function(){h.find("._help_button").attr("aria-expanded",false);
+h.find("._help_layer").attr("aria-hidden",true)
+});
+function f(i){e($(i.currentTarget))
+}function e(j){h.find("._keyword_tab").attr("aria-selected",false);
+j.attr("aria-selected",true);
+var i=j.data("index");
+b.hide();
+h.find('._content_tab[data-index="'+i+'"][data-report-index="0"]').show()
+}function g(j){var i=c.getPageInfo();
+h.find("._keyword_tab").attr("aria-selected",false);
+d.each(function(k){var l=$(this);
+if(k===i.beginIndex){l.show();
+e(l.find("._keyword_tab"))
+}else{if(k>i.beginIndex&&k<i.endIndex){l.show()
+}else{l.hide()
+}}})
+}function a(m){var l=$(m.currentTarget);
+var j=l.data("index");
+var n=l.data("report-index");
+var k=l.data("report-count");
+var i=n+1>=k?0:n+1;
+b.hide();
+h.find('._content_tab[data-index="'+j+'"][data-report-index="'+i+'"]').show()
+}};
