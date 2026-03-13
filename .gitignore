@@ -10,7 +10,7 @@ env/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-
+data/
 # --- Frontend (React / Node.js) ---
 node_modules/
 dist/
