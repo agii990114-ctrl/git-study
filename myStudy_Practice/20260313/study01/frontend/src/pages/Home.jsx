@@ -4,36 +4,38 @@ import { api } from '@utils/network.js'
 const Home = () => {
   const [messages, setMessages] = useState([
     { role: 'bot', content: '안녕하세요! 무엇을 도와드릴까요?' },
-    { role: 'user', content: '리액트로 채팅 UI 만드는 법 알려줘.' },
-    { role: 'bot', content: '부트스트랩의 flex 클래스를 활용하면 말풍선을 쉽게 정렬할 수 있어요!' }
   ]);
   const [input, setInput] = useState('');
 
   
-  const Send = () => {
+  const Send = e => {
+    e.preventDefault()
+    
+    if (!input.trim()) return;
     const item = {input}
     console.log(item)
+    
 
-    api.post("/webhook-test/app", item)
+    api.post("/webhook/app", item)
     .then(res => {
       console.log(res)
+      setTimeout(() => {
+      setMessages(prev => [...prev, { 
+        role: 'bot', 
+        content: res.data["result"]
+      }]);
+    }, 800);
     })
     .catch(err => {
       console.log(err)
     })
 
-    // if (!input.trim()) return;
-    // const newMessages = [...messages, { role: 'user', content: input }];
-    // setMessages(newMessages);
-    // setInput('');
+    const newMessages = [...messages, { role: 'user', content: input }];
+    setMessages(newMessages);
+    setInput('');
 
     // 응답 시뮬레이션
-    setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        role: 'bot', 
-        content: '말풍선 예시가 추가되었습니다. 이런 스타일은 어떠신가요?' 
-      }]);
-    }, 800);
+    
   };
 
   return (
@@ -78,7 +80,7 @@ const Home = () => {
       </div>
 
       {/* 입력창 */}
-      <div className="p-3 border-top bg-white">
+      <form className="p-3 border-top bg-white" onSubmit={Send}>
         <div className="container" style={{ maxWidth: '700px' }}>
           <div className="input-group border rounded-pill px-3 py-1 shadow-sm">
             <input 
@@ -89,12 +91,12 @@ const Home = () => {
               onChange={(e) => setInput(e.target.value)}
               // onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             />
-            <button className="btn btn-link text-primary fw-bold text-decoration-none" onClick={Send}>
+            <button className="btn btn-link text-primary fw-bold text-decoration-none" type='submit'>
               전송
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
