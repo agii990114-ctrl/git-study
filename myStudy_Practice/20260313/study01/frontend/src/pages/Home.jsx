@@ -1,99 +1,167 @@
-import { useState } from 'react';
-import { api } from '@utils/network.js'
+import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect } from "react";
+import { api } from "@utils/network.js";
 
 const Home = () => {
   const [messages, setMessages] = useState([
-    { role: 'bot', content: '안녕하세요! 무엇을 도와드릴까요?' },
+    { role: "bot", content: "안녕하세요! 무엇을 도와드릴까요?" },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
+  const [startBool, setStartBoll] = useState(false);
+  const scrollRef = useRef(null);
+  const [msgLoad, setMsgLoad] = useState(false);
+  const [inputLoad, setInputLoad] = useState(false);
 
-  
-  const Send = e => {
-    e.preventDefault()
-    
+  const Send = (e) => {
+    e.preventDefault();
     if (!input.trim()) return;
-    const item = {input}
-    console.log(item)
-    
+    setMsgLoad(false)
+    setInputLoad(true)
 
-    api.post("/webhook/app", item)
-    .then(res => {
-      console.log(res)
-      setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        role: 'bot', 
-        content: res.data["result"]
-      }]);
-    }, 800);
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    if (input) {
+      setStartBoll(true);
+    }
 
-    const newMessages = [...messages, { role: 'user', content: input }];
-    setMessages(newMessages);
-    setInput('');
+    const item = { input };
+
+    console.log(item);
+
+    api
+      .post("/webhook/app", item)
+      .then((res) => {
+        console.log(res);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "bot",
+            content: res.data["result"],
+            example: "..."
+          },
+        ]);
+        setMsgLoad(true)
+        setInputLoad(false)
+      })
+      .catch((err) => {
+        console.log(err);
+        setMsgLoad(true)
+        setInputLoad(false)
+        alert("네트워크 연결을 확인해주세요");
+      });
+
+    setMessages((prev)=>[...prev, { role: "user", content: input }]);
+    setInput("");
 
     // 응답 시뮬레이션
-    
+  };
+  // AbortController를 담을 ref 생성
+  const abortControllerRef = useRef(null);
+
+  const handleCancel = () => {
+    // 3. 취소 버튼 클릭 시 abort 호출
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
   };
 
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
-    <div className="container-fluid vh-100 d-flex flex-column bg-white">
+    <div className={`container-fluid vh-100 d-flex flex-column bg-white `}>
       {/* 헤더 */}
       <header className="p-3 border-bottom bg-white sticky-top">
-        <h5 className="mb-0 fw-bold text-primary">Gayoung Chat</h5>
+        <h5 className="mb-0 fw-bold text-primary">Jihwan Chat</h5>
       </header>
 
       {/* 채팅 내역 (말풍선 영역) */}
-      <div className="flex-grow-1 overflow-auto p-4 bg-light">
-        <div className="container" style={{ maxWidth: '700px' }}>
+      <div
+        className={`flex-grow-1 overflow-auto p-4 bg-light ${startBool ? "" : "d-none"}`}>
+        <div className="container" style={{ maxWidth: "700px" }}>
+          
           {messages.map((msg, idx) => (
-            <div key={idx} className={`d-flex mb-4 ${msg.role === 'user' ? 'justify-content-end' : 'justify-content-start'}`}>
-              
+            <div
+              key={idx}
+              className={`d-flex mb-4 chat_box ${msg.role === "user" ? "justify-content-end" : "justify-content-start"} `}>
               {/* AI 아이콘 (왼쪽 답변일 때만 표시) */}
-              {msg.role === 'bot' && (
+              {msg.role === "bot" && (
                 <div className="me-2 mt-1">
-                  <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style={{ width: '30px', height: '30px', fontSize: '12px' }}>
+                  <div
+                    className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                    style={{ width: "30px", height: "30px", fontSize: "12px" }}>
                     AI
                   </div>
                 </div>
               )}
 
               {/* 말풍선 본체 */}
-              <div 
+              <div
                 className={`p-3 shadow-sm ${
-                  msg.role === 'user' 
-                    ? 'bg-primary text-white rounded-start-4 rounded-top-4' // 사용자
-                    : 'bg-white text-dark border rounded-end-4 rounded-top-4' // AI
+                  msg.role === "user"
+                    ? "bg-primary text-white rounded-start-4 rounded-top-4" // 사용자
+                    : "bg-white text-dark border rounded-end-4 rounded-top-4" // AI
                 }`}
-                style={{ maxWidth: '75%', fontSize: '0.95rem' }}
+                style={{ maxWidth: "75%", fontSize: "0.95rem" }}
               >
                 <div className="fw-bold mb-1 small" style={{ opacity: 0.8 }}>
-                  {msg.role === 'user' ? '나' : 'Gemini'}
+                  {msg.role === "user" ? "나" : "gemma"}
                 </div>
-                <div style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</div>
+                <div style={{ whiteSpace: "pre-wrap" }}>
+                  {msg.content}
+                </div>
               </div>
             </div>
           ))}
+          <div className={`loading_box mb-4 chat_box justify-content-start ${msgLoad ? "d-none": "d-flex"}`}>
+            <div className="me-2 mt-1">
+              <div
+                className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                style={{ width: "30px", height: "30px", fontSize: "12px" }}>
+                AI
+              </div>
+            </div>
+            <div className={`p-3 shadow-sm "bg-white text-dark border rounded-end-4 rounded-top-4`}
+                style={{ maxWidth: "75%", fontSize: "0.95rem" }}>
+                <div className="fw-bold mb-1 small" style={{ opacity: 0.8 }}>
+                  gemma
+                </div>
+                <div className="loading_chat" style={{ whiteSpace: "pre-wrap" }}>
+                  <span>•</span>
+                  <span>•</span>
+                  <span>•</span>
+                </div>
+              </div>
+          </div>
+          <div ref={scrollRef} />
         </div>
       </div>
 
       {/* 입력창 */}
-      <form className="p-3 border-top bg-white" onSubmit={Send}>
-        <div className="container" style={{ maxWidth: '700px' }}>
-          <div className="input-group border rounded-pill px-3 py-1 shadow-sm">
-            <input 
-              type="text" 
-              className="form-control border-0 shadow-none" 
+      <form
+        className={`${startBool ? "input_box border-top" : "input_box active "}  p-3`} onSubmit={Send}>
+        {!startBool && <h3>안녕하세요! 무엇을 도와드릴까요?</h3>}
+        <div className="container" style={{ maxWidth: "700px" }}>
+          <div className="input-group border rounded-pill px-3 py-1 shadow-sm" style={{background: `${inputLoad? '#e9ecef':'#fff'}`}}>
+            <input
+              type="text"
+              className="form-control border-0 shadow-none"
               placeholder="메시지를 입력하세요..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              disabled = {inputLoad}
               // onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             />
-            <button className="btn btn-link text-primary fw-bold text-decoration-none" type='submit'>
+            {
+              // !inputLoad?
+              <button className="btn btn-link text-primary fw-bold text-decoration-none" type="submit">
               전송
             </button>
+            // : <button className="btn btn-link text-primary fw-bold text-decoration-none" type="button" onClick={()=>handleCancel()}>취소</button> 
+            }
           </div>
         </div>
       </form>
@@ -102,8 +170,6 @@ const Home = () => {
 };
 
 export default Home;
-
-
 
 // import { useState, useEffect } from 'react'
 // import { api } from '@utils/network.js'
@@ -129,12 +195,12 @@ export default Home;
 //     .catch(err=>{
 //       console.log(err)
 //     })
-    
+
 //     // setItem("")
 
 //   }
 //   useEffect(() => {
-    
+
 //   }, [])
 //   return (
 //     <div className="container mt-3">
@@ -176,5 +242,3 @@ export default Home;
 // }
 
 // export default Home
-
-
