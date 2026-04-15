@@ -20,7 +20,7 @@ class Node(BaseModel):
 
 class Relationship(BaseModel):
   type: str  # 관계 유형
-  start_node_id: str  # 시작 노드 ID
+  start_node_id: str  # 시작 노드 ID 
   end_node_id: str  # 끝 노드 ID
   properties: Optional[Dict[str, PropertyValue]] = None  # 관계 속성
 
